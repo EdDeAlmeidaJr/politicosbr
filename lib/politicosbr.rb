@@ -3,6 +3,12 @@ require 'http'
 class PoliticosBR
  
   def self.deputados
+    planilha = HTTP.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
+    splanilha = planilha.to_s
+    target = open('deputados.xls','w')
+    target.truncate(0)
+    target.write(splanilha)
+    target.close
   end
 
   def self.senadores
