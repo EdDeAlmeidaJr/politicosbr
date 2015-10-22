@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'politicosbr'
-puts PoliticosBR.deputados(ARGV[0])
-puts PoliticosBR.senadores(ARGV[0])
+
+puts PoliticosBR.deputados
+
+puts PoliticosBR.senadores
