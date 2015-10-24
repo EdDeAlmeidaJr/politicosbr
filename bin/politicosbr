@@ -2,6 +2,13 @@
 
 require 'politicosbr'
 
+puts "####### DEPUTADOS #######"
 puts PoliticosBR.deputados
 
+puts "####### SENADORES #######"
 puts PoliticosBR.senadores
+
+puts "####### TODOS #######"
+puts PoliticosBR.todos
+
+
