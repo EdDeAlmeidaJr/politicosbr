@@ -42,4 +42,13 @@ class PoliticosBR
     x
   end
   
+  def self.todos
+    x = senadores
+    y = deputados
+    y.each do |p|
+      x.push(p)
+    end
+    x
+  end
+  
 end
