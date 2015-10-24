@@ -14,6 +14,10 @@ Ela é bastante simples e oferece apenas três métodos:
 
 ## Coisas para fazer nas próximas versões
 
+  * Selecionar deputados federais e senadores por estado
+  * Deputados estaduais e distritais
+  * Vereadores
+
 ## Autor
 
 Edvaldo Silva de Almeida Júnior (EdDeAlmeidaJr)
