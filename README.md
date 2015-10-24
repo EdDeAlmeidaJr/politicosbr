@@ -22,6 +22,6 @@ Ela é bastante simples e oferece apenas três métodos:
 
 Edvaldo Silva de Almeida Júnior (EdDeAlmeidaJr)
 
-  e-mail:       edvaldoajunior@gmail.com
-  Skype:        edalmeidajr 
-  Celula:       +55-41-9507-3644
+  * e-mail:       edvaldoajunior@gmail.com
+  * Skype:        edalmeidajr 
+  * Celular:      +55-41-9507-3644
