@@ -8,6 +8,6 @@ Gem::Specification.new do |s|
   s.authors     = ["Edvaldo Silva de Almeida Jr."]
   s.email       = 'edvaldoajunior@gmail.com'
   s.files       = ["lib/politicosbr.rb", "bin/politicosbr", "Gemfile", "Gemfile.lock", "Rakefile"]
-  s.homepage    = 'http://rubygems.org/gems/polilticosbr'
+  s.homepage    = 'https://github.com/EdDeAlmeidaJr/politicosbr'
   s.license     = 'MIT'
 end
