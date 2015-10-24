@@ -6,12 +6,26 @@ class PoliticosBR
   def self.deputados 
     ssheet = HTTP.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
     planilha = ssheet.to_s
-    arq = File.open("deputados2.xls","w")
+    arq = File.open("deputados.xls","w")
     arq.write(planilha)
     arq.close
-    file_basename = File.basename("deputados2.xls", ".xls") 
-    xls = Roo::Excel.new("deputados2.xls")
+    file_basename = File.basename("deputados.xls", ".xls") 
+    xls = Roo::Excel.new("deputados.xls")
     xls.to_csv("#{file_basename}.csv")
+    x = Array.new
+    File.readlines("#{file_basename}.csv").each do |linha|
+      campos = linha.split(",")
+      campos.each do |campo|
+        if campo.index("@")
+          p1 = campo.slice(1,campo.length)
+          p2 = p1.slice(0,p1.length-1)
+          x.push(p2)
+        end
+      end
+    end
+    x.each do |myx|
+      puts myx
+    end
   end
 
   def self.senadores
