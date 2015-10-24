@@ -23,9 +23,7 @@ class PoliticosBR
         end
       end
     end
-    x.each do |myx|
-      puts myx
-    end
+    x
   end
 
   def self.senadores
@@ -41,9 +39,7 @@ class PoliticosBR
         x.push(p2)
       end
     end
-    x.each do |myx|
-      puts myx
-    end
+    x
   end
   
 end
