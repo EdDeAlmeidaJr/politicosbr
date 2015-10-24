@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'politicosbr'
-  s.version     = '0.1.25'
+  s.version     = '1.0.0'
   s.executables << 'politicosbr'
   s.date        = '2015-10-21'
   s.summary     = "PoliticosBR"
