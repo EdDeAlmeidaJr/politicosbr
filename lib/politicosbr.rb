@@ -1,10 +1,17 @@
 require 'http'
-require 'spreadsheet'
+require 'roo-xls'
 
 class PoliticosBR
  
   def self.deputados 
     ssheet = HTTP.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
+    planilha = ssheet.to_s
+    arq = File.open("deputados2.xls","w")
+    arq.write(planilha)
+    arq.close
+    file_basename = File.basename("deputados2.xls", ".xls") 
+    xls = Roo::Excel.new("deputados2.xls")
+    xls.to_csv("#{file_basename}.csv")
   end
 
   def self.senadores
