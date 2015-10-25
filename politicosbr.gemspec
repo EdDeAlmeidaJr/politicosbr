@@ -1,7 +1,8 @@
 Gem::Specification.new do |s|
   s.name                   =  'politicosbr'
   s.version                =  '1.0.3'
-  s.add_runtime_dependency =  'http'
+  s.add_runtime_dependency 'http', '~> 0.9', '>= 0.9.8'
+  s.add_runtime_dependency 'roo-xls', '~> 1.0', '>= 1.0.0'
   s.executables            << 'politicosbr'
   s.date                   =  '2015-10-21'
   s.summary                =  "PoliticosBR"
