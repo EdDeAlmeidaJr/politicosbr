@@ -6,6 +6,7 @@ class PoliticosBR
   def self.deputados 
     ssheet = HTTP.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
     planilha = ssheet.to_s
+    planilha.force_encoding("UTF-8")
     arq = File.open("deputados.xls","w")
     arq.write(planilha)
     arq.close
