@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name                   =  'politicosbr'
-  s.version                =  '2.0.0'
+  s.version                =  '2.0.1'
   s.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.6.2'
   s.add_runtime_dependency 'httparty', '~> 0.13', '>= 0.13.7'
   s.add_runtime_dependency 'roo-xls', '~> 1.0', '>= 1.0.0'  

@@ -31,6 +31,7 @@ module PoliticosBR
       deputado[:email] = campos[15]
       camara.push(deputado)
     end
+    camara.shift
     camara
   end
 
