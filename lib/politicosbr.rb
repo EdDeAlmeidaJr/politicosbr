@@ -6,7 +6,6 @@ require 'roo-xls'
 module PoliticosBR
  
   def self.deputados 
-    keys = [ :nome, :partido, :estado, :mandato, :fones, :email ]
     camara = Array.new
     ssheet = HTTParty.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
     planilha = ssheet.to_s
