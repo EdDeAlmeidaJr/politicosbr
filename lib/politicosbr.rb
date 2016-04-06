@@ -28,7 +28,7 @@ class PoliticosBR
   end
 
   def self.senadores
-    page_content = HTTP.get('http://www25.senado.leg.br/web/senadores/em-exercicio')
+    page_content = HTTP.get('http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome')
     spc = page_content.to_s
     spc.force_encoding("UTF-8")
     lista1 = spc.split
