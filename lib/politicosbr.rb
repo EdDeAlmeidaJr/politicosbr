@@ -1,46 +1,57 @@
-require 'http'
+require 'open-uri'
+require 'nokogiri'
+require 'httparty'
 require 'roo-xls'
 
-class PoliticosBR
+module PoliticosBR
  
   def self.deputados 
-    ssheet = HTTP.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
+    keys = [ :nome, :partido, :estado, :mandato, :fones, :email ]
+    camara = Array.new
+    ssheet = HTTParty.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
     planilha = ssheet.to_s
-    planilha.force_encoding("UTF-8")
-    arq = File.open("deputados.xls","w")
+    planilha.force_encoding('UTF-8')
+    arq = File.open('deputados.xls','w')
     arq.write(planilha)
     arq.close
-    file_basename = File.basename("deputados.xls", ".xls") 
-    xls = Roo::Excel.new("deputados.xls")
+    file_basename = File.basename('deputados.xls', '.xls') 
+    xls = Roo::Excel.new('deputados.xls')
     xls.to_csv("#{file_basename}.csv")
     x = Array.new
     File.readlines("#{file_basename}.csv").each do |linha|
-      campos = linha.split(",")
-      campos.each do |campo|
-        if campo.index("@")
-          p1 = campo.slice(1,campo.length)
-          p2 = p1.slice(0,p1.length-1)
-          x.push(p2)
-        end
-      end
+      campos = linha.split(',')
+      campos.each_index { |i|
+        campos[i] = campos[i].delete '"'
+      }
+      deputado = Hash.new
+      deputado[:nome] = campos[0]
+      deputado[:partido] = campos[1]
+      deputado[:estado] = campos[2]
+      deputado[:mandato] = ''
+      deputado[:fones] = '(61) ' + campos[11] + ' |  (61) ' + campos[12]
+      deputado[:email] = campos[15]
+      camara.push(deputado)
     end
-    x
+    camara
   end
 
   def self.senadores
-    page_content = HTTP.get('http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome')
-    spc = page_content.to_s
-    spc.force_encoding("UTF-8")
-    lista1 = spc.split
-    x = Array.new
-    lista1.each do |p|
-      if p.index("@")
-        p1 = p.slice(4,p.length)
-        p2 = p1.slice(0,p1.length-5)
-        x.push(p2)
+    keys = [ :nome, :partido, :estado, :mandato, :fones, :email ]
+    senado = Array.new
+    senador = Hash.new
+    doc = Nokogiri::HTML(open('http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome'))
+    tds = doc.xpath('//td').to_a
+    tds.each_index{ |i|
+      rem = i % 6
+      if (rem == 0) then
+        if (!senador.empty?) then
+          senado.push(senador)
+        end
+        senador = Hash.new
       end
-    end
-    x
+      senador[keys[rem]] = tds[i].content
+    }
+    senado
   end
   
   def self.todos
