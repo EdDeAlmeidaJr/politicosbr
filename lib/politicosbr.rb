@@ -4,63 +4,64 @@ require 'httparty'
 require 'roo-xls'
 
 module PoliticosBR
- 
-  def self.deputados 
-    camara = Array.new
-    ssheet = HTTParty.get('http://www.camara.gov.br/internet/deputado/deputado.xls')
-    planilha = ssheet.to_s
-    planilha.force_encoding('UTF-8')
-    arq = File.open('deputados.xls','w')
-    arq.write(planilha)
-    arq.close
-    file_basename = File.basename('deputados.xls', '.xls') 
-    xls = Roo::Excel.new('deputados.xls')
-    xls.to_csv("#{file_basename}.csv")
-    x = Array.new
-    File.readlines("#{file_basename}.csv").each do |linha|
-      campos = linha.split(',')
-      campos.each_index { |i|
-        campos[i] = campos[i].delete '"'
-      }
-      deputado = Hash.new
-      deputado[:nome] = campos[0]
-      deputado[:partido] = campos[1]
-      deputado[:estado] = campos[2]
-      deputado[:mandato] = ''
-      deputado[:fones] = '(61) ' + campos[11] + ' |  (61) ' + campos[12]
-      deputado[:email] = campos[15]
-      camara.push(deputado)
+  DEPUTADOS_URL = 'http://www.camara.gov.br/internet/deputado/deputado.xls'
+  SENADORES_URL = 'http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome'
+
+  def self.deputados
+    deputados = Array.new
+
+    source = HTTParty.get(DEPUTADOS_URL)
+
+    tempfile = Tempfile.new('deputados.xls').tap do |f|
+      f.write(source)
     end
-    camara.shift
-    camara
+
+    spreadsheet = Roo::Excel.new(tempfile.path, file_warning: :ignore)
+
+    (2..spreadsheet.last_row).each do |i|
+      row = spreadsheet.row(i)
+
+      deputado = OpenStruct.new
+      deputado.tipo = 'deputado'
+      deputado.nome = row[0]
+      deputado.partido = row[1]
+      deputado.estado = row[2]
+      deputado.mandato = ''
+      deputado.fones = "(61) #{row[11]} | (61) #{row[12]}"
+      deputado.email = row[13]
+
+      deputados.push(deputado)
+    end
+
+    deputados
   end
 
   def self.senadores
-    keys = [ :nome, :partido, :estado, :mandato, :fones, :email ]
-    senado = Array.new
-    senador = Hash.new
-    doc = Nokogiri::HTML(open('http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome'))
-    tds = doc.xpath('//td').to_a
-    tds.each_index{ |i|
-      rem = i % 6
-      if (rem == 0) then
-        if (!senador.empty?) then
-          senado.push(senador)
-        end
-        senador = Hash.new
-      end
-      senador[keys[rem]] = tds[i].content
-    }
-    senado
-  end
-  
-  def self.todos
-    x = senadores
-    y = deputados
-    y.each do |p|
-      x.push(p)
+    senadores = Array.new
+
+    doc = Nokogiri::HTML(open(SENADORES_URL))
+    rows = doc.xpath('//table[@id="senadoresemexercicio-tabela-senadores"]/tbody/tr')
+
+    rows.each do |row|
+      senador = OpenStruct.new
+      senador.tipo = 'senador'
+      senador.nome = row.at_xpath('td[1]/a/text()').to_s.strip
+      senador.partido = row.at_xpath('td[2]/text()').to_s.strip
+      senador.estado = row.at_xpath('td[3]/text()').to_s.strip
+      senador.mandato = row.at_xpath('td[4]/text()').to_s.strip
+      senador.fones = row.at_xpath('td[5]/text()').to_s.strip
+      senador.email = row.at_xpath('td[6]/text()').to_s.strip
+
+      senadores.push(senador)
     end
-    x
+
+    senadores
   end
-  
+
+  def self.todos
+    all = deputados
+    all.push(*senadores)
+
+    all
+  end
 end
