@@ -13,7 +13,7 @@ module PoliticosBR
     source = HTTParty.get(DEPUTADOS_URL)
 
     tempfile = Tempfile.new('deputados.xls').tap do |f|
-      f.write(source)
+      f.write(source.to_s.force_encoding('UTF-8'))
     end
 
     spreadsheet = Roo::Excel.new(tempfile.path, file_warning: :ignore)
