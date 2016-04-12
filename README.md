@@ -40,10 +40,13 @@ Os índices disponíveis no array são: **:nome**, **:partido**, **:estado**, **
   * Deputados estaduais e distritais
   * Vereadores
 
-## Autor
+## Autores
 
 Edvaldo Silva de Almeida Júnior (EdDeAlmeidaJr)
-
   * e-mail:       edvaldoajunior@gmail.com
   * Skype:        edalmeidajr 
   * Celular:      +55-41-9507-3644
+
+Eduardo Becker (eduBKR)
+  * e-mail: edu.bkr@gmail.com
+
