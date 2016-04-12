@@ -1,6 +1,8 @@
 ## PoliticosBR
 
 [![Gem Version](https://badge.fury.io/rb/politicosbr.svg)](https://badge.fury.io/rb/politicosbr)
+[![Code Climate](https://codeclimate.com/github/EdDeAlmeidaJr/politicosbr/badges/gpa.svg)](https://codeclimate.com/github/EdDeAlmeidaJr/politicosbr)
+<a href="https://codeclimate.com/github/EdDeAlmeidaJr/politicosbr"><img src="https://codeclimate.com/github/EdDeAlmeidaJr/politicosbr/badges/issue_count.svg" /></a>
 
 ## Descrição
 
