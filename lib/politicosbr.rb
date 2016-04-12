@@ -23,7 +23,7 @@ module PoliticosBR
 
       deputado = OpenStruct.new
       deputado.tipo = 'deputado'
-      deputado.nome = row[0]
+      deputado.nome = row[0].upcase
       deputado.partido = row[1]
       deputado.estado = row[2]
       deputado.mandato = ''
@@ -45,7 +45,7 @@ module PoliticosBR
     rows.each do |row|
       senador = OpenStruct.new
       senador.tipo = 'senador'
-      senador.nome = row.at_xpath('td[1]/a/text()').to_s.strip
+      senador.nome = row.at_xpath('td[1]/a/text()').to_s.strip.upcase
       senador.partido = row.at_xpath('td[2]/text()').to_s.strip
       senador.estado = row.at_xpath('td[3]/text()').to_s.strip
       senador.mandato = row.at_xpath('td[4]/text()').to_s.strip
