@@ -2,15 +2,18 @@ require 'open-uri'
 require 'nokogiri'
 require 'httparty'
 require 'roo-xls'
+require 'rot13'
+
+require 'politicosbr/constants'
+require 'politicosbr/estaduais'
+require 'politicosbr/vereadores'
 
 module PoliticosBR
-  DEPUTADOS_URL = 'http://www.camara.gov.br/internet/deputado/deputado.xls'
-  SENADORES_URL = 'http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome'
 
   def self.deputados
     deputados = Array.new
 
-    source = HTTParty.get(DEPUTADOS_URL)
+    source = HTTParty.get(PoliticosBR::DEPUTADOS_URL)
 
     tempfile = Tempfile.new('deputados.xls').tap do |f|
       f.write(source.to_s.force_encoding('UTF-8'))
@@ -21,16 +24,16 @@ module PoliticosBR
     (2..spreadsheet.last_row).each do |i|
       row = spreadsheet.row(i)
 
-      deputado = OpenStruct.new
-      deputado.tipo = 'deputado'
-      deputado.nome = row[0].upcase
-      deputado.partido = row[1]
-      deputado.estado = row[2]
-      deputado.mandato = ''
-      deputado.fones = "(61) #{row[11]} | (61) #{row[12]}"
-      deputado.email = row[13]
+      politico = OpenStruct.new
+      politico.tipo = 'deputado'
+      politico.nome = row[0].upcase
+      politico.partido = row[1]
+      politico.estado = row[2]
+      politico.mandato = ''
+      politico.fones = "(61) #{row[11]} | (61) #{row[12]}"
+      politico.email = row[13]
 
-      deputados.push(deputado)
+      deputados.push(politico)
     end
 
     deputados
@@ -39,20 +42,20 @@ module PoliticosBR
   def self.senadores
     senadores = Array.new
 
-    doc = Nokogiri::HTML(open(SENADORES_URL))
+    doc = Nokogiri::HTML(open(PoliticosBR::SENADORES_URL))
     rows = doc.xpath('//table[@id="senadoresemexercicio-tabela-senadores"]/tbody/tr')
 
     rows.each do |row|
-      senador = OpenStruct.new
-      senador.tipo = 'senador'
-      senador.nome = row.at_xpath('td[1]/a/text()').to_s.strip.upcase
-      senador.partido = row.at_xpath('td[2]/text()').to_s.strip
-      senador.estado = row.at_xpath('td[3]/text()').to_s.strip
-      senador.mandato = row.at_xpath('td[4]/text()').to_s.strip
-      senador.fones = row.at_xpath('td[5]/text()').to_s.strip
-      senador.email = row.at_xpath('td[6]/text()').to_s.strip
+      politico = OpenStruct.new
+      politico.tipo = 'senador'
+      politico.nome = row.at_xpath('td[1]/a/text()').to_s.strip.upcase
+      politico.partido = row.at_xpath('td[2]/text()').to_s.strip
+      politico.estado = row.at_xpath('td[3]/text()').to_s.strip
+      politico.mandato = row.at_xpath('td[4]/text()').to_s.strip
+      politico.fones = row.at_xpath('td[5]/text()').to_s.strip
+      politico.email = row.at_xpath('td[6]/text()').to_s.strip
 
-      senadores.push(senador)
+      senadores.push(politico)
     end
 
     senadores
@@ -61,7 +64,39 @@ module PoliticosBR
   def self.todos
     all = deputados
     all.push(*senadores)
-
     all
   end
+  
+  def self.deputados_estaduais(estado)
+    method_name = "deputados_estaduais_#{estado}"
+    method(method_name).call
+  end
+  
+  # Métodos para os estados
+  
+  def self.deputados_estaduais_pr
+    deputados = Array.new
+    url = PoliticosBR::DEPS_ESTADUAIS[:pr]
+    doc = Nokogiri::HTML(open(url))
+    rows = doc.xpath('//ul/li')
+    rows.each do |row|
+      nome = row.at_xpath('span/a/text()').to_s.strip.upcase
+      if (!nome.empty?) then
+        politico = OpenStruct.new
+        politico.tipo = 'deputado'
+        politico.nome = nome
+        politico.url = row.at_xpath('span/a/@href').to_s.strip
+        politico.partido = row.at_xpath('span/text()[normalize-space()]').to_s.strip
+        politico.estado = 'PR'
+        
+        docdetails = Nokogiri::HTML(open(politico.url))
+        politico.fones = docdetails.xpath('//div[contains(@class, "redes")]/p[3]/text()[normalize-space()]').to_s.strip
+        politico.email = Rot13.rotate(docdetails.xpath('//div[contains(@class, "redes")]/p[4]/a/text()[normalize-space()]').to_s.strip)
+        
+        deputados.push(politico)
+      end
+    end
+    [ deputados, deputados.count ]
+  end
+  
 end
