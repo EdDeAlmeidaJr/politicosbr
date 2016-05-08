@@ -10,13 +10,14 @@ Esta gem fornece listas atualizadas de deputados e senadores brasileiros, com no
 
 Se a sua aplicação tem como objetivo enviar mensagens para nossos "honestos e patrióticos" políticos, esta gem foi feita para você.
 
-Ela é bastante simples e oferece apenas três métodos:
+Ela é bastante simples e oferece apenas quatro métodos:
 
   * PoliticosBR.deputados
   * PoliticosBR.senadores
   * PoliticosBR.todos
+  * PoliticosBR.deputados_estaduais(estado)  (onde estado é a sigla do estado desejado)
 
-Cada um desses métodos retorna uma array de hashes onde cada hash representa um deputado ou senador.
+Cada um desses métodos retorna uma array de objetos OpenStruct onde cada um representa um deputado ou senador.
 
 Assim, se tivermos:
 
@@ -37,7 +38,6 @@ Os índices disponíveis no array são: **:nome**, **:partido**, **:estado**, **
 ## Coisas para fazer nas próximas versões
 
   * Selecionar deputados federais e senadores por estado
-  * Deputados estaduais e distritais
   * Vereadores
 
 ## Autores

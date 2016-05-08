@@ -72,6 +72,4 @@ module PoliticosBR
     method(method_name).call
   end
   
-
-  
 end

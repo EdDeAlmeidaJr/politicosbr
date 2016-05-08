@@ -28,6 +28,31 @@ module PoliticosBR
     deputados
   end  
   
+  # Rio de Janeiro
+  def self.deputados_estaduais_rj
+    deputados = Array.new
+    url = PoliticosBR::DEPS_ESTADUAIS[:rj]
+    url_split = url.split('/')
+    base_url = "#{url_split[0]}//#{url_split[2]}"    
+    doc = Nokogiri::HTML(open(url))
+    rows = doc.xpath('//div[contains(@class, "lista_deputados")]')
+    rows.each do |row|
+      politico = OpenStruct.new
+      politico.tipo = 'deputado'
+      politico.estado = 'RJ'
+      politico.nome = row.at_xpath('div/div[2]/div[2]/a/text()').to_s.strip
+      politico.partido = row.at_xpath('div/div[2]/div/text()').to_s.strip
+      politico.url = "#{base_url}#{row.at_xpath('div/div[2]/div[2]/a/@href').to_s.strip}"
+      
+      #docdetails = Nokogiri::HTML(open(politico.url))
+      #politico.fones = docdetails.xpath('//div[contains(@class, "redes")]/p[3]/text()[normalize-space()]').to_s.strip
+      #politico.email = Rot13.rotate(docdetails.xpath('//div[contains(@class, "redes")]/p[4]/a/text()[normalize-space()]').to_s.strip)
+        
+      deputados.push(politico)
+    end
+    deputados
+  end   
+  
   # Rio Grande do Sul
   def self.deputados_estaduais_rs
     deputados = Array.new
@@ -65,5 +90,30 @@ module PoliticosBR
     end
     deputados    
   end
+  
+  # São Paulo
+  def self.deputados_estaduais_sp
+    deputados = Array.new
+    url = PoliticosBR::DEPS_ESTADUAIS[:sp]
+    url_split = url.split('/')
+    base_url = "#{url_split[0]}//#{url_split[2]}"
+    doc = Nokogiri::HTML(open(url))
+    rows = doc.xpath('//table/tbody/tr')
+    rows.each do |row|
+      politico = OpenStruct.new
+      politico.tipo = 'deputado'
+      politico.estado = 'SP'
+      politico.nome = row.at_xpath('td[1]/a/text()').to_s.strip
+      politico.url = "#{base_url}#{row.at_xpath('td[1]/a/@href').to_s.strip}"
+      politico.partido = row.at_xpath('td[4]/text()').to_s.strip
+
+      docdetails = Nokogiri::HTML(open(politico.url))
+      politico.fones = docdetails.xpath('//div[contains(@id, "infoGeral")]/p[12]/text()').to_s.strip
+      politico.email = docdetails.xpath('//div[contains(@id, "infoGeral")]/p[17]/text()').to_s.strip
+        
+      deputados.push(politico)
+    end
+    deputados
+  end  
   
 end
