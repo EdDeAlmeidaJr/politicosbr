@@ -7,7 +7,9 @@ module PoliticosBR
   SENADORES_URL = 'http://www25.senado.leg.br/web/senadores/em-exercicio/-/e/por-nome'
   
   ## Hash containing the list of URLs to get the lists of state representatives in Brazilian states
-  DEPS_ESTADUAIS = { pr: 'http://www.alep.pr.gov.br/deputados' }
+  DEPS_ESTADUAIS = { pr: 'http://www.alep.pr.gov.br/deputados',
+                     rs: 'http://www.al.rs.gov.br/deputados/ListadeDeputados.aspx',
+                     sc: 'http://www.alesc.sc.gov.br/portal_alesc/todos-deputados' }
   
   
 end

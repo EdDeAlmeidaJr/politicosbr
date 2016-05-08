@@ -72,31 +72,6 @@ module PoliticosBR
     method(method_name).call
   end
   
-  # Métodos para os estados
-  
-  def self.deputados_estaduais_pr
-    deputados = Array.new
-    url = PoliticosBR::DEPS_ESTADUAIS[:pr]
-    doc = Nokogiri::HTML(open(url))
-    rows = doc.xpath('//ul/li')
-    rows.each do |row|
-      nome = row.at_xpath('span/a/text()').to_s.strip.upcase
-      if (!nome.empty?) then
-        politico = OpenStruct.new
-        politico.tipo = 'deputado'
-        politico.nome = nome
-        politico.url = row.at_xpath('span/a/@href').to_s.strip
-        politico.partido = row.at_xpath('span/text()[normalize-space()]').to_s.strip
-        politico.estado = 'PR'
-        
-        docdetails = Nokogiri::HTML(open(politico.url))
-        politico.fones = docdetails.xpath('//div[contains(@class, "redes")]/p[3]/text()[normalize-space()]').to_s.strip
-        politico.email = Rot13.rotate(docdetails.xpath('//div[contains(@class, "redes")]/p[4]/a/text()[normalize-space()]').to_s.strip)
-        
-        deputados.push(politico)
-      end
-    end
-    [ deputados, deputados.count ]
-  end
+
   
 end
