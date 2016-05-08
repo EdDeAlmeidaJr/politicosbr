@@ -2,13 +2,14 @@
 
 require 'politicosbr'
 
-puts "####### DEPUTADOS #######"
-puts PoliticosBR.deputados
+##puts '####### DEPUTADOS #######'
+##puts PoliticosBR.deputados
 
-puts "####### SENADORES #######"
-puts PoliticosBR.senadores
+##puts '####### SENADORES #######'
+##puts PoliticosBR.senadores
 
-puts "####### TODOS #######"
-puts PoliticosBR.todos
+##puts '####### TODOS #######'
+##puts PoliticosBR.todos
 
-
+puts '####### Deputados Estaduais #######'
+puts PoliticosBR.deputados_estaduais('pr')
