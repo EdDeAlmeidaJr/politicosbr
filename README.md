@@ -17,6 +17,8 @@ Ela é bastante simples e oferece apenas quatro métodos:
   * PoliticosBR.todos
   * PoliticosBR.deputados_estaduais(estado)  (onde estado é a sigla do estado desejado)
 
+  OBS: Até a versão 2.2.0 a gema suporta apenas os seguintes estados: pr, sc, rs, rj e sp
+
 Cada um desses métodos retorna uma array de objetos OpenStruct onde cada um representa um deputado ou senador.
 
 Assim, se tivermos:
