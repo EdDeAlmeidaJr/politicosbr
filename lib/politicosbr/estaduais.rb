@@ -35,22 +35,25 @@ module PoliticosBR
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"    
     doc = Nokogiri::HTML(open(url))
-    rows = doc.xpath('//div[contains(@class, "lista_deputados")]')
+    rows = doc.xpath('//div[contains(@class, "controle_deputado")]')
     rows.each do |row|
       politico = OpenStruct.new
       politico.tipo = 'deputado'
       politico.estado = 'RJ'
-      politico.nome = row.at_xpath('div/div[2]/div[2]/a/text()').to_s.strip
-      politico.partido = row.at_xpath('div/div[2]/div/text()').to_s.strip
-      politico.url = "#{base_url}#{row.at_xpath('div/div[2]/div[2]/a/@href').to_s.strip}"
+      politico.nome = row.at_xpath('div[2]/div[2]/a/text()').to_s.strip
+      url_relativa_split = row.at_xpath('div[2]/div[2]/a/@href').to_s.strip.split('/')
+      url_relativa = "/#{url_relativa_split[2]}/#{url_relativa_split[3]}/#{url_relativa_split[4]}"
+      politico.partido = row.at_xpath('div[2]/div/text()').to_s.strip
+      politico.url = "#{base_url}#{url_relativa}"
       
-      #docdetails = Nokogiri::HTML(open(politico.url))
-      #politico.fones = docdetails.xpath('//div[contains(@class, "redes")]/p[3]/text()[normalize-space()]').to_s.strip
-      #politico.email = Rot13.rotate(docdetails.xpath('//div[contains(@class, "redes")]/p[4]/a/text()[normalize-space()]').to_s.strip)
+      docdetails = Nokogiri::HTML(open(politico.url))
+      basedocdetails = docdetails.xpath('//div[contains(@class, "descricao")]')
+      politico.fones = basedocdetails.at_xpath('p[3]/text()').to_s.strip
+      politico.email = basedocdetails.xpath('p[4]/text()').to_s.strip
         
       deputados.push(politico)
     end
-    deputados
+    [ deputados , deputados.count ]
   end   
   
   # Rio Grande do Sul
