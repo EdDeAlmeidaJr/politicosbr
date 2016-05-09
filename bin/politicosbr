@@ -12,4 +12,4 @@ require 'politicosbr'
 ##puts PoliticosBR.todos
 
 puts '####### Deputados Estaduais #######'
-puts PoliticosBR.deputados_estaduais('rj')
+puts PoliticosBR.deputados_estaduais('rn')

@@ -53,7 +53,7 @@ module PoliticosBR
         
       deputados.push(politico)
     end
-    [ deputados , deputados.count ]
+    deputados
   end   
   
   # Rio Grande do Sul

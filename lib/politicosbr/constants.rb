@@ -8,7 +8,7 @@ module PoliticosBR
   
   ## Hash containing the list of URLs to get the lists of state representatives in Brazilian states
   DEPS_ESTADUAIS = { ac: 'http://www.al.ac.leg.br/?page_id=2064',
-                     al: 'http://www.al.al.leg.br/processo-legislativo/parlamentares',
+                     al: 'http://sapl.al.al.leg.br/consultas/parlamentar/parlamentar_index_html',
                      am: 'http://www.ale.am.gov.br/deputados/',
                      ap: 'http://www.al.ap.gov.br/pagina.php?pg=exibir_legislatura&idlegislatura=7',
                      ba: 'http://www.al.ba.gov.br/deputados/Deputados.php',
