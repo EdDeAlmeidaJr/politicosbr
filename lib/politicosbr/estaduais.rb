@@ -119,8 +119,6 @@ module PoliticosBR
     deputados
   end  
   
-  private 
-  
   def self.get_url(estado)
     PoliticosBR::DEPS_ESTADUAIS[estado]
   end
