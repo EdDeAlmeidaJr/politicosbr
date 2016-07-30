@@ -30,11 +30,11 @@ module PoliticosBR
   
   # Rio de Janeiro
   def self.deputados_estaduais_rj
-    deputados = Array.new
     url = get_url(:rj)
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"    
     doc = get_doc(url)
+    deputados = Array.new    
     rows = doc.xpath('//div[contains(@class, "controle_deputado")]')
     rows.each do |row|
       politico = OpenStruct.new
@@ -58,10 +58,10 @@ module PoliticosBR
   
   # Rio Grande do Sul
   def self.deputados_estaduais_rs
-    deputados = Array.new
     url = get_url(:rs)
     doc = get_doc(url)
     rows = doc.xpath('//div[contains(@id, "dnn_ctr657_ModuleContent")]/div')
+    deputados = Array.new    
     rows.each do |row|
       politico = OpenStruct.new
       politico.tipo = 'deputado'
@@ -77,10 +77,10 @@ module PoliticosBR
   
   # Santa Catarina
   def self.deputados_estaduais_sc
-    deputados = Array.new
     url = get_url(:sc)
     doc = get_doc(url)
     rows = doc.xpath('//table/tbody/tr')
+    deputados = Array.new    
     rows.each do |row|
       politico = OpenStruct.new
       politico.tipo = 'deputado'
@@ -96,11 +96,11 @@ module PoliticosBR
   
   # São Paulo
   def self.deputados_estaduais_sp
-    deputados = Array.new
     url = get_url(:sp)
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"
     doc = get_doc(url)
+    deputados = Array.new    
     rows = doc.xpath('//table/tbody/tr')
     rows.each do |row|
       politico = OpenStruct.new
