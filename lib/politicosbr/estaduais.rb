@@ -5,7 +5,7 @@ module PoliticosBR
   # Paraná
   def self.deputados_estaduais_pr
     deputados = Array.new
-    url = PoliticosBR::DEPS_ESTADUAIS[:pr]
+    url = get_url(:pr)
     doc = Nokogiri::HTML(open(url))
     rows = doc.xpath('//ul/li')
     rows.each do |row|
@@ -31,7 +31,7 @@ module PoliticosBR
   # Rio de Janeiro
   def self.deputados_estaduais_rj
     deputados = Array.new
-    url = PoliticosBR::DEPS_ESTADUAIS[:rj]
+    url = get_url(:rj)
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"    
     doc = Nokogiri::HTML(open(url))
@@ -59,7 +59,7 @@ module PoliticosBR
   # Rio Grande do Sul
   def self.deputados_estaduais_rs
     deputados = Array.new
-    url = PoliticosBR::DEPS_ESTADUAIS[:rs]
+    url = get_url(:rs)
     doc = Nokogiri::HTML(open(url))
     rows = doc.xpath('//div[contains(@id, "dnn_ctr657_ModuleContent")]/div')
     rows.each do |row|
@@ -78,7 +78,7 @@ module PoliticosBR
   # Santa Catarina
   def self.deputados_estaduais_sc
     deputados = Array.new
-    url = PoliticosBR::DEPS_ESTADUAIS[:sc]
+    url = get_url(:sc)
     doc = Nokogiri::HTML(open(url))
     rows = doc.xpath('//table/tbody/tr')
     rows.each do |row|
@@ -97,7 +97,7 @@ module PoliticosBR
   # São Paulo
   def self.deputados_estaduais_sp
     deputados = Array.new
-    url = PoliticosBR::DEPS_ESTADUAIS[:sp]
+    url = get_url(:sp)
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"
     doc = Nokogiri::HTML(open(url))
@@ -118,5 +118,11 @@ module PoliticosBR
     end
     deputados
   end  
+  
+  private 
+  
+  def self.get_url(estado)
+    PoliticosBR::DEPS_ESTADUAIS[estado]
+  end
   
 end
