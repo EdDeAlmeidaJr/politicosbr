@@ -4,9 +4,9 @@ module PoliticosBR
   
   # Paraná
   def self.deputados_estaduais_pr
-    deputados = Array.new
     url = get_url(:pr)
-    doc = Nokogiri::HTML(open(url))
+    doc = get_doc(url)
+    deputados = Array.new
     rows = doc.xpath('//ul/li')
     rows.each do |row|
       nome = row.at_xpath('span/a/text()').to_s.strip.upcase
@@ -34,7 +34,7 @@ module PoliticosBR
     url = get_url(:rj)
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"    
-    doc = Nokogiri::HTML(open(url))
+    doc = get_doc(url)
     rows = doc.xpath('//div[contains(@class, "controle_deputado")]')
     rows.each do |row|
       politico = OpenStruct.new
@@ -60,7 +60,7 @@ module PoliticosBR
   def self.deputados_estaduais_rs
     deputados = Array.new
     url = get_url(:rs)
-    doc = Nokogiri::HTML(open(url))
+    doc = get_doc(url)
     rows = doc.xpath('//div[contains(@id, "dnn_ctr657_ModuleContent")]/div')
     rows.each do |row|
       politico = OpenStruct.new
@@ -79,7 +79,7 @@ module PoliticosBR
   def self.deputados_estaduais_sc
     deputados = Array.new
     url = get_url(:sc)
-    doc = Nokogiri::HTML(open(url))
+    doc = get_doc(url)
     rows = doc.xpath('//table/tbody/tr')
     rows.each do |row|
       politico = OpenStruct.new
@@ -100,7 +100,7 @@ module PoliticosBR
     url = get_url(:sp)
     url_split = url.split('/')
     base_url = "#{url_split[0]}//#{url_split[2]}"
-    doc = Nokogiri::HTML(open(url))
+    doc = get_doc(url)
     rows = doc.xpath('//table/tbody/tr')
     rows.each do |row|
       politico = OpenStruct.new
@@ -121,6 +121,10 @@ module PoliticosBR
   
   def self.get_url(estado)
     PoliticosBR::DEPS_ESTADUAIS[estado]
+  end
+  
+  def self.get_doc(url)
+    Nokogiri::HTML(open(url))
   end
   
 end
