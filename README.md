@@ -42,6 +42,10 @@ Os índices disponíveis no array são: **:nome**, **:partido**, **:estado**, **
   * Selecionar deputados federais e senadores por estado
   * Vereadores
 
+## Doações
+
+Considere a possibilidade de ajudar o meu trabalho [doando](https://gratipay.com/~EdDeAlmeidaJr/) algum dinheiro. Isso vai ajudar-me a produzir mais e mais gemas para enriquecer o ecossistema Ruby.
+
 ## Autores
 
 Edvaldo Silva de Almeida Júnior (EdDeAlmeidaJr)
