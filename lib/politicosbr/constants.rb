@@ -1,5 +1,7 @@
 module PoliticosBR
 
+  VERSION = "2.2.1"
+
   ## URL to get the spreadesheet with the list of federal representatives
   DEPUTADOS_URL = 'http://www.camara.gov.br/internet/deputado/deputado.xls'
   
